@@ -2,8 +2,20 @@ const axios = require('axios');
 const qrcode = require('qrcode-terminal');
 const cricket = require('./sources/cricket');
 const trendingAnime = require('./sources/animeList');
+const express = require('express');
+
 
 const { Client, LocalAuth, MessageMedia, List,Chat, Buttons, MessageTypes} = require('whatsapp-web.js');
+
+const app = express();
+app.get('/', (req, res) => {
+ 
+    res.send('Hello World!')
+    res.end()
+})
+ 
+const PORT = process.env.PORT ||5000;
+
 
 const client = new Client({
     authStrategy: new LocalAuth(),
@@ -180,3 +192,6 @@ async function sendAnime(anime, client, message){
 		client.sendMessage(message.from, list);
 	}
 }
+
+app.listen(PORT, console.log(
+	`Server started on port ${PORT}`));
