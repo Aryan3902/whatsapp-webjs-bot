@@ -1,13 +1,14 @@
 const axios = require('axios');
 const qrcode = require('qrcode-terminal');
-const cricket = require('sources/cricket.js');
-const trendingAnime = require('sources/animeList.js');
+const cricket = require('./sources/cricket');
+const trendingAnime = require('./sources/animeList');
 
 const { Client, LocalAuth, MessageMedia, List,Chat, Buttons, MessageTypes} = require('whatsapp-web.js');
 
 const client = new Client({
     authStrategy: new LocalAuth(),
-	puppeteer: { headless: true },
+	puppeteer: { headless: true,
+	args: ['--no-sandbox'] },
 });
 
 client.on('qr', qr => {
