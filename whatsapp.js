@@ -1,7 +1,7 @@
 const axios = require('axios');
 const qrcode = require('qrcode-terminal');
-const cricket = require('/Users/aryan/Documents/Whatsapp/sources/cricket.js');
-const trendingAnime = require('/Users/aryan/Documents/Whatsapp/sources/animeList.js');
+const cricket = require('sources/cricket.js');
+const trendingAnime = require('sources/animeList.js');
 
 const { Client, LocalAuth, MessageMedia, List,Chat, Buttons, MessageTypes} = require('whatsapp-web.js');
 
