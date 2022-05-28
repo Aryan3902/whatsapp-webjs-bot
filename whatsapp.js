@@ -5,6 +5,8 @@ const trendingAnime = require('./sources/animeList');
 
 const { Client, LocalAuth, MessageMedia, List,Chat, Buttons, MessageTypes} = require('whatsapp-web.js');
 
+const allowedGrps = ['919770066812-1627626919', '120363021118812220','919770066812-1604162668','120363024469115035']
+
 const client = new Client({
     authStrategy: new LocalAuth(),
 	puppeteer: { headless: true,
@@ -39,10 +41,10 @@ client.on('message', message => {
 client.on('message', async (message) => {
 	let chat = await message.getChat();
     
-	if(message.body === '!ping' && !chat.isGroup) {	
+	if(message.body === '!ping') {	
 		message.reply('pong');
 	}
-	else if(message.body.toLowerCase().startsWith("anime ") && !chat.isGroup) {
+	else if(message.body.toLowerCase().startsWith("anime ") && (!chat.isGroup || allowedGrps.includes(chat.id.user))) {
 		console.log(message.body);
 		let anime = message.body;
 		
@@ -51,7 +53,7 @@ client.on('message', async (message) => {
 		sendAnime(anime, client, message);
 		console.log(animeDetails);
 	}
-	else if(message.body === '!score' && !chat.isGroup){
+	else if(message.body === '!score' && (!chat.isGroup || allowedGrps.includes(chat.id.user))){
 		
 		let liveMatches = await cricket();
 		let rows = liveMatches.matchNames;
@@ -66,7 +68,7 @@ client.on('message', async (message) => {
 		console.log(list.sections[0].rows);
 		client.sendMessage(message.from, list);
 	}
-	else if (message.body === ".everyone") {
+	else if (message.body === ".everyone" && chat.isGroup) {
 		const chat = await message.getChat();
 	
 		let text = "";
