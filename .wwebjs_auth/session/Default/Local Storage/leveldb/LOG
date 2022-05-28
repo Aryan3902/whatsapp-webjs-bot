@@ -1,3 +1,3 @@
-2022/05/27-16:37:01.451 6058 Reusing MANIFEST C:\Users\aryan\Documents\Whatsapp\.wwebjs_auth\session\Default\Local Storage\leveldb/MANIFEST-000001
-2022/05/27-16:37:01.451 6058 Recovering log #4
-2022/05/27-16:37:01.452 6058 Reusing old log C:\Users\aryan\Documents\Whatsapp\.wwebjs_auth\session\Default\Local Storage\leveldb/000004.log 
+2022/05/27-15:10:52.764 1c8e Reusing MANIFEST /workspaces/whatsapp-webjs-bot/.wwebjs_auth/session/Default/Local Storage/leveldb/MANIFEST-000001
+2022/05/27-15:10:52.764 1c8e Recovering log #4
+2022/05/27-15:10:52.764 1c8e Reusing old log /workspaces/whatsapp-webjs-bot/.wwebjs_auth/session/Default/Local Storage/leveldb/000004.log 
