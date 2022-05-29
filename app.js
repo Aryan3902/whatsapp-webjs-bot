@@ -197,7 +197,7 @@ var http = require('http'); //importing http
 function startKeepAlive() {
     setInterval(function() {
         var options = {
-            host: 'whatsapp-webjs-bot.com',
+            host: 'whatsapp-webjs-bot.herokuapp.com',
             port: 80,
             path: '/'
         };
