@@ -34,8 +34,7 @@ client.on('ready', () => {
 
 client.on('message', message => {
 	
-	console.log(message.body + " sent by " + message.from + " of id ");;
-	console.log(message.id);
+	console.log(message.body + " sent by " + message.from);;
 	const promise = message.getQuotedMessage();
 	const newPromise = promise.then((response) => {
 		if(response.id.fromMe && response.body === "Tap here to get the list of live matches-"){
@@ -44,7 +43,6 @@ client.on('message', message => {
 		if(response.id.fromMe && (response.body === "Trending Anime of the week:" || response.body === "Try these trending animes:")){
 			sendAnime(message.body, client, message);
 		}
-	console.log(response.id.fromMe)
 	}).catch(err => console.log(err));
 	
 });
@@ -193,6 +191,32 @@ async function sendAnime(anime, client, message){
 		client.sendMessage(message.from, list);
 	}
 }
+
+var http = require('http'); //importing http
+
+function startKeepAlive() {
+    setInterval(function() {
+        var options = {
+            host: 'whatsapp-webjs-bot.com',
+            port: 80,
+            path: '/'
+        };
+        http.get(options, function(res) {
+            res.on('data', function(chunk) {
+                try {
+                    // optional logging... disable after it's working
+                    console.log("HEROKU RESPONSE: " + chunk);
+                } catch (err) {
+                    console.log(err.message);
+                }
+            });
+        }).on('error', function(err) {
+            console.log("Error: " + err.message);
+        });
+    }, 20 * 60 * 1000); // load every 20 minutes
+}
+
+startKeepAlive();
 
 app.listen(PORT, console.log(
 	`Server started on port ${PORT}`));
