@@ -82,7 +82,7 @@ client.on('message', async (message) => {
 		
 		let list = new List("Tap here to get the list of live matches-", "Live Matches", sections, "Live Score", "footer");
 		console.log(list.sections[0].rows);
-		client.reply(message.from, list);
+		client.sendMessage(message.from, list);
 	}
 	else if (message.body === ".everyone" ) {
 		const chat = await message.getChat();
@@ -97,7 +97,7 @@ client.on('message', async (message) => {
 		  text += `@${participant.id.user} `;
 		}
 	
-		await chat.reply(text, { mentions });
+		await chat.sendMessage(text, { mentions });
 	}
     else if (message.body.toLowerCase().startsWith("!shop ")  && (!chat.isGroup || allowedGrps.includes(chat.id))) {
         let shop = message.body.split("!shop ")[1];
@@ -143,7 +143,7 @@ client.on('message', async (message) => {
                 const media =  await MessageMedia.fromUrl(movie.image);
                 let res = movie;
                 caption = `*${res.title} ${res.description}*\nRuntime: ${res.runtimeStr}\nGenre: ${res.genres}\nIMDB Rating: ${res.imDbRating}`;
-                await client.reply(message.from,media,{caption : caption});   
+                await client.sendMessage(message.from,media,{caption : caption});   
             }
             else{
                 axios.get("https://www.omdbapi.com/?apikey=b005110c&t="+ movieDetails[1] +"&type=movie&r=json").then(async (res) => {
@@ -151,7 +151,7 @@ client.on('message', async (message) => {
                     const caption = `*${res.Title} (${res.Year})*\nRuntime: ${res.Runtime}\nGenre: ${res.Genre}\nIMDB Rating: ${res.imdbRating}`;
                     // console.log(res.Poster);
                     const media = await MessageMedia.fromUrl(res.Poster);
-                    await client.reply(message.from,media,{caption : caption});
+                    await client.sendMessage(message.from,media,{caption : caption});
                 })
                 .catch(err => console.log(err));
             }
