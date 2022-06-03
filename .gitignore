@@ -1,6 +1,6 @@
 /node_modules
 declare.js
-scrape.js
-trail.js
+
+reference.js
 try.js
 sources/pythonTry.py

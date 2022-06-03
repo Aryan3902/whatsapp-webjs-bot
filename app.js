@@ -2,6 +2,8 @@ const axios = require('axios');
 const qrcode = require('qrcode-terminal');
 const cricket = require('./sources/cricket');
 const trendingAnime = require('./sources/animeList');
+const itemData = require('./sources/flipkart');
+const movieList = require('./movie')
 const express = require('express');
 
 
@@ -43,7 +45,12 @@ client.on('message', message => {
 		if(response.id.fromMe && (response.body === "Trending Anime of the week:" || response.body === "Try these trending animes:")){
 			sendAnime(message.body, client, message);
 		}
-	}).catch(err => console.log(err));
+        if(response.id.fromMe && (response.body === "Tap here to get the list of products-")){
+            let itemMessage = message.body
+            itemMessage = itemMessage.split('Link: ')[1];
+			getItem(itemMessage, client, message);
+		}
+	}).catch(err => console.log());
 	
 });
 
@@ -53,7 +60,7 @@ client.on('message', async (message) => {
 	if(message.body === '!ping') {	
 		message.reply('pong');
 	}
-	else if(message.body.toLowerCase().startsWith("anime ") && (!chat.isGroup || allowedGrps.includes(chat.id.user))) {
+	else if(message.body.toLowerCase().startsWith("anime ") ) {
 		console.log(message.body);
 		let anime = message.body;
 		
@@ -62,7 +69,7 @@ client.on('message', async (message) => {
 		sendAnime(anime, client, message);
 		console.log(animeDetails);
 	}
-	else if(message.body === '!score' && (!chat.isGroup || allowedGrps.includes(chat.id.user))){
+	else if(message.body === '!score' ){
 		
 		let liveMatches = await cricket();
 		let rows = liveMatches.matchNames;
@@ -77,7 +84,7 @@ client.on('message', async (message) => {
 		console.log(list.sections[0].rows);
 		client.sendMessage(message.from, list);
 	}
-	else if (message.body === ".everyone" && chat.isGroup) {
+	else if (message.body === ".everyone") {
 		const chat = await message.getChat();
 	
 		let text = "";
@@ -92,7 +99,113 @@ client.on('message', async (message) => {
 	
 		await chat.sendMessage(text, { mentions });
 	}
-})
+    else if (message.body.toLowerCase().startsWith("!shop ") ) {
+        let shop = message.body.split("!shop ")[1];
+        let item = shop.split(" ")[0];
+        let shopDetails = await itemData(item);
+        let rows = [];
+        for(let i =0;i<shopDetails.length;i++){
+            rows.push({ title : shopDetails[i].name,
+            description : '₹' + shopDetails[i].current_price + '\nLink: ' + shopDetails[i].link,});
+        }
+        let sections = [
+			{
+			  title: "Current Products: ",
+			  rows
+			},
+		];
+		
+		let list = new List("Tap here to get the list of products-", "Products", sections, "List of Products", "footer");
+        // sendShop(shopDetails, client, message);
+        // console.log(shopDetails);
+        client.sendMessage(message.from, list);
+    }
+    else if(message.body.toLowerCase() === "useless fact"){
+        axios.get("https://uselessfacts.jsph.pl/random.json?language=en").then(res => {
+            message.reply(res.data.text);
+        });
+
+    }
+    else if(message.body.toLowerCase().startsWith("!movie")){
+        let movieDetails = message.body.split("!movie ");
+        let messageLength = movieDetails.length;
+        // console.log(messageLength);
+        if(message.body === "!movie"){
+            message.reply("!movie <name> will give the details of the movie\n!movie random will give you a random movie\n!movie random <genre> will give you a random movie of that genre\n!movie random <year> will give you a random movie of that genre from that year to present");
+        }
+        else if(messageLength >= 1){
+            if(movieDetails[1] === "random" && messageLength === 2){
+                
+                let movie = movieList.results[Math.floor(Math.random() * movieList.results.length)];
+                const media =  await MessageMedia.fromUrl(movie.image);
+                let res = movie;
+                caption = `*${res.title} ${res.description}*\nRuntime: ${res.runtimeStr}\nGenre: ${res.genres}\nIMDB Rating: ${res.imDbRating}`;
+                await client.sendMessage(message.from,media,{caption : caption});   
+            }
+            else{
+                axios.get("https://www.omdbapi.com/?apikey=b005110c&t="+ movieDetails[1] +"&type=movie&r=json").then(async (res) => {
+                    res = res.data;
+                    const caption = `*${res.Title} (${res.Year})*\nRuntime: ${res.Runtime}\nGenre: ${res.Genre}\nIMDB Rating: ${res.imdbRating}`;
+                    // console.log(res.Poster);
+                    const media = await MessageMedia.fromUrl(res.Poster);
+                    await client.sendMessage(message.from,media,{caption : caption});
+                })
+                .catch(err => console.log(err));
+            }
+        }
+            // else if(movieDetails[2] === "random" && (movieDetails[3] !== undefined && parseInt(movieDetails[3]) !== NaN)){
+            //     let year = movieDetails[3];
+            //     url = "https://api.themoviedb.org/3/discover/movie?api_key=844b38f039c30a8efee3ed08226875b8&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=1&primary_release_year=" + year;
+            //     axios.get(url).then(res => {
+            //         let movie = res.data.results[Math.floor(Math.random() * res.data.results.length)];
+            //         let movieName = movie.title;
+            //         let movieId = movie.id;
+            //         let movieUrl = "https://api.themoviedb.org/3/movie/" + movieId + "?api_key=844b38f039c30a8efee3ed08226875b8&language=en-US";
+            //         axios.get(movieUrl).then(res => {
+            //             let movieDetails = res.data;
+            //             let movieOverview = movieDetails.overview;
+            //             let movieGenre = movieDetails.genres[0].name;
+            //             let movieReleaseDate = movieDetails.release_date;
+            //             let movieRating = movieDetails.vote_average;
+            //             let moviePoster = "https://image.tmdb.org/t/p/w500" + movieDetails.poster_path;
+            //             let movieMessage = new Message(`${movieName} is a ${movieGenre} movie released in ${movieReleaseDate} with a rating of ${movieRating}/10\n${movieOverview}`);
+            //             message.reply(movieMessage);
+            //             let movieImage = new Image(moviePoster);
+            //             message.reply(movieImage);
+            //         });
+            //     });
+            // }
+            // else if(movieDetails[2] !== "random" && (movieDetails[3] !== undefined && parseInt(movieDetails[3]) === NaN) ){
+            //     let genre = movieDetails[2];
+            //     url = "https://api.themoviedb.org/3/discover/movie?api_key=844b38f039c30a8efee3ed08226875b8&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=1&with_genres=" + genre;
+            //     axios.get(url).then(res => {
+            //         let movie = res.data.results[Math.floor(Math.random() * res.data.results.length)];
+            //         let movieName = movie.title;
+            //         let movieId = movie.id;
+            //         let movieUrl = "https://api.themoviedb.org/3/movie/" + movieId + "?api_key=844b38f039c30a8efee3ed08226875b8&language=en-US";
+            //         axios.get(movieUrl).then(res => {
+            //             let movieDetails = res.data;
+            //             let movieOverview = movieDetails.overview;
+            //             let movieGenre = movieDetails.genres[0].name;
+            //             let movieReleaseDate = movieDetails.release_date;
+            //             let movieRating = movieDetails.vote_average;
+            //             let moviePoster = "https://image.tmdb.org/t/p/w500" + movieDetails.poster_path;
+            //             let movieMessage = new Message(`${movieName} is a ${movieGenre} movie released in ${movieReleaseDate} with a rating of ${movieRating}/10\n${movieOverview}`);
+            //             let movieImage = new Image(moviePoster);
+            //             message.reply(movieMessage);
+                        
+            //             message.reply(movieImage);
+            //         });
+            //     });
+            // }
+            
+                
+        }
+        
+    }
+    
+    
+)
 
 
 
@@ -192,7 +305,49 @@ async function sendAnime(anime, client, message){
 	}
 }
 
+async function getItem(item, client, message){
+    item = item.split(".com/")[1];
+    
+    const url = "https://flipkart.dvishal485.workers.dev/product/min/dl/" + item;
+    axios
+      .get(url)
+      .then(async (response) => {
+            response = response.data;
+           
+            let caption = `*${response.name}*\n~${response.original_price}~ ${response.current_price}\n${response.rating} ★\n${response.share_url}`;
+            if (response.in_stock) {
+                caption+=  "\nIn Stock";
+            }
+            else {
+                caption+= "\nOut of Stock";
+            }
+            console.log(caption);
+            let media;
+            if(response.thumbnails.length ===0){
+                media = "Image Not Found";
+                await client.sendMessage(message.from,caption);
+            }
+            else{
+                try {
+                    media = await MessageMedia.fromUrl(response.thumbnails[0].split("?q=")[0]);
+                    await client.sendMessage(message.from,media,{caption : caption});
+                } catch (error) {
+                    await client.sendMessage(message.from,caption);
+                }
+            }
+            
+            
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+    // let itemDetails = await itemData(item);
+    // const messageBody = `${itemDetails[0].Name}\n${itemDetails[0].Price}\n${itemDetails[0].Link}`;
+    // client.sendMessage(message.from, messageBody);
+}
+
 var http = require('http'); //importing http
+const res = require('express/lib/response');
 
 function startKeepAlive() {
     setInterval(function() {

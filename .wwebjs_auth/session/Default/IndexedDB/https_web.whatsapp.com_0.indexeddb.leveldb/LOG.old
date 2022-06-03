@@ -1,14 +1,10 @@
-2022/05/27-16:37:09.299 6348 Reusing MANIFEST C:\Users\aryan\Documents\Whatsapp\.wwebjs_auth\session\Default\IndexedDB\https_web.whatsapp.com_0.indexeddb.leveldb/MANIFEST-000001
-2022/05/27-16:37:09.300 6348 Recovering log #145
-2022/05/27-16:37:09.681 6348 Reusing old log C:\Users\aryan\Documents\Whatsapp\.wwebjs_auth\session\Default\IndexedDB\https_web.whatsapp.com_0.indexeddb.leveldb/000145.log 
-2022/05/27-16:37:20.655 65c8 Level-0 table #154: started
-2022/05/27-16:37:20.733 65c8 Level-0 table #154: 1302233 bytes OK
-2022/05/27-16:37:20.738 65c8 Delete type=0 #145
-2022/05/27-16:37:20.748 65c8 Compacting 1@1 + 5@2 files
-2022/05/27-16:37:20.955 65c8 Generated table #155@1: 32910 keys, 2249846 bytes
-2022/05/27-16:37:21.139 65c8 Generated table #156@1: 48001 keys, 2259227 bytes
-2022/05/27-16:37:21.212 65c8 Generated table #157@1: 21443 keys, 2174411 bytes
-2022/05/27-16:37:21.435 65c8 Generated table #158@1: 85434 keys, 2232062 bytes
-2022/05/27-16:37:21.583 65c8 Generated table #159@1: 55800 keys, 1243624 bytes
-2022/05/27-16:37:21.583 65c8 Compacted 1@1 + 5@2 files => 10159170 bytes
-2022/05/27-16:37:21.583 65c8 compacted to: files[ 0 0 5 0 0 0 0 ]
+2022/05/30-22:25:15.889 5850 Reusing MANIFEST C:\Users\aryan\Documents\Whatsapp\.wwebjs_auth\session\Default\IndexedDB\https_web.whatsapp.com_0.indexeddb.leveldb/MANIFEST-000001
+2022/05/30-22:25:15.889 5850 Recovering log #525
+2022/05/30-22:25:15.895 5850 Reusing old log C:\Users\aryan\Documents\Whatsapp\.wwebjs_auth\session\Default\IndexedDB\https_web.whatsapp.com_0.indexeddb.leveldb/000525.log 
+2022/05/30-22:25:44.029 5850 Compacting 1@1 + 2@2 files
+2022/05/30-22:25:44.096 5850 Generated table #541@1: 26999 keys, 670770 bytes
+2022/05/30-22:25:44.096 5850 Compacted 1@1 + 2@2 files => 670770 bytes
+2022/05/30-22:25:44.097 5850 compacted to: files[ 0 0 12 0 0 0 0 ]
+2022/05/30-22:25:44.098 5850 Delete type=2 #509
+2022/05/30-22:25:44.098 5850 Delete type=2 #524
+2022/05/30-22:25:44.098 5850 Delete type=2 #528
