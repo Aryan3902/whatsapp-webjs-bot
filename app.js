@@ -263,7 +263,15 @@ async function matchDetails(givenMatch,client,message){
 	let rows = liveMatches.matches;
 	let matchReq = rows.filter(match=> match.name === givenMatch);
 	let Score = matchReq[0].score;
-	matchStats = `${matchReq[0].name} \n*${matchReq[0].matchType.toUpperCase()} Match* \nVenue: ${matchReq[0].venue}\n${matchReq[0].status}\n*Score:*\n${Score[Score.length - 1].inning}\n${Score[Score.length - 1].r}/${Score[Score.length - 1].w} (${Score[Score.length-1].o})`;
+    let typeMatch;
+    try {
+        typeMatch = matchReq[0].matchType.toUpperCase();
+    }
+    catch (error) {
+        typeMatch = "";
+        console.log(error);
+    }
+	matchStats = `${matchReq[0].name} \n*${typeMatch} Match* \nVenue: ${matchReq[0].venue}\n${matchReq[0].status}\n*Score:*\n${Score[Score.length - 1].inning}\n${Score[Score.length - 1].r}/${Score[Score.length - 1].w} (${Score[Score.length-1].o})`;
 	client.sendMessage(message.from, matchStats )
 }
 
