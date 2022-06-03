@@ -114,7 +114,7 @@ client.on('message', async (message) => {
 			  rows
 			},
 		];
-		let Listtitle = item.charAt(0).toUpperCase() + item.slice(1);
+		let Listtitle = item.charAt(0).toUpperCase() + item.slice(1).toLowerCase();
         if(Listtitle[Listtitle.length-1] !== 's'){
             Listtitle = Listtitle + 's';
         }
@@ -204,7 +204,11 @@ client.on('message', async (message) => {
             
                 
         }
+    else if(message.body === "!help"){
         
+        let commands = "*!score*\nGet the score of current Matches\n\n*!anime <name>*\nGet the details of an anime\n\n*!movie <name>*\nGet the details of a movie\n*!movie random*\nGet a random movie\n\n*!shop <product>*\nGet the product details in the form of a list\n\n*useless fact*\nAs the title says\n\n*!help*\nGet the list of commands";
+        client.sendMessage(msg.from, commands);
+    }
     }
     
     
@@ -268,7 +272,7 @@ async function matchDetails(givenMatch,client,message){
         typeMatch = matchReq[0].matchType.toUpperCase();
     }
     catch (error) {
-        typeMatch = "";
+        typeMatch = "Cricket";
         console.log(error);
     }
 	matchStats = `${matchReq[0].name} \n*${typeMatch} Match* \nVenue: ${matchReq[0].venue}\n${matchReq[0].status}\n*Score:*\n${Score[Score.length - 1].inning}\n${Score[Score.length - 1].r}/${Score[Score.length - 1].w} (${Score[Score.length-1].o})`;
