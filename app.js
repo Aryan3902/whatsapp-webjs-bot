@@ -207,7 +207,7 @@ client.on('message', async (message) => {
     else if(message.body === "!help"){
         
         let commands = "*!score*\nGet the score of current Matches\n\n*!anime <name>*\nGet the details of an anime\n\n*!movie <name>*\nGet the details of a movie\n*!movie random*\nGet a random movie\n\n*!shop <product>*\nGet the product details in the form of a list\n\n*useless fact*\nAs the title says\n\n*!help*\nGet the list of commands";
-        client.sendMessage(msg.from, commands);
+        client.sendMessage(message.from, commands);
     }
     }
     
