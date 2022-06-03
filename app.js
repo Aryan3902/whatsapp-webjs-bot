@@ -60,7 +60,7 @@ client.on('message', async (message) => {
 	if(message.body === '!ping') {	
 		message.reply('pong');
 	}
-	else if(message.body.toLowerCase().startsWith("anime ") ) {
+	else if(message.body.toLowerCase().startsWith("anime ") && allowedGrps.includes(chat.id)) {
 		console.log(message.body);
 		let anime = message.body;
 		
@@ -69,7 +69,7 @@ client.on('message', async (message) => {
 		sendAnime(anime, client, message);
 		console.log(animeDetails);
 	}
-	else if(message.body === '!score' ){
+	else if(message.body === '!score' && allowedGrps.includes(chat.id)){
 		
 		let liveMatches = await cricket();
 		let rows = liveMatches.matchNames;
@@ -82,9 +82,9 @@ client.on('message', async (message) => {
 		
 		let list = new List("Tap here to get the list of live matches-", "Live Matches", sections, "Live Score", "footer");
 		console.log(list.sections[0].rows);
-		client.sendMessage(message.from, list);
+		client.reply(message.from, list);
 	}
-	else if (message.body === ".everyone") {
+	else if (message.body === ".everyone" ) {
 		const chat = await message.getChat();
 	
 		let text = "";
@@ -97,9 +97,9 @@ client.on('message', async (message) => {
 		  text += `@${participant.id.user} `;
 		}
 	
-		await chat.sendMessage(text, { mentions });
+		await chat.reply(text, { mentions });
 	}
-    else if (message.body.toLowerCase().startsWith("!shop ") ) {
+    else if (message.body.toLowerCase().startsWith("!shop ")  && allowedGrps.includes(chat.id)) {
         let shop = message.body.split("!shop ")[1];
         let item = shop.split(" ")[0];
         let shopDetails = await itemData(item);
@@ -114,8 +114,11 @@ client.on('message', async (message) => {
 			  rows
 			},
 		];
-		
-		let list = new List("Tap here to get the list of products-", "Products", sections, "List of Products", "footer");
+		let Listtitle = item.charAt(0).toUpperCase() + item.slice(1);
+        if(Listtitle[Listtitle.length-1] !== 's'){
+            Listtitle = Listtitle + 's';
+        }
+		let list = new List("Tap here to get the list of products-", "Products", sections, Listtitle, "footer");
         // sendShop(shopDetails, client, message);
         // console.log(shopDetails);
         client.sendMessage(message.from, list);
@@ -126,7 +129,7 @@ client.on('message', async (message) => {
         });
 
     }
-    else if(message.body.toLowerCase().startsWith("!movie")){
+    else if(message.body.toLowerCase().startsWith("!movie") && allowedGrps.includes(chat.id)){
         let movieDetails = message.body.split("!movie ");
         let messageLength = movieDetails.length;
         // console.log(messageLength);
@@ -140,7 +143,7 @@ client.on('message', async (message) => {
                 const media =  await MessageMedia.fromUrl(movie.image);
                 let res = movie;
                 caption = `*${res.title} ${res.description}*\nRuntime: ${res.runtimeStr}\nGenre: ${res.genres}\nIMDB Rating: ${res.imDbRating}`;
-                await client.sendMessage(message.from,media,{caption : caption});   
+                await client.reply(message.from,media,{caption : caption});   
             }
             else{
                 axios.get("https://www.omdbapi.com/?apikey=b005110c&t="+ movieDetails[1] +"&type=movie&r=json").then(async (res) => {
@@ -148,7 +151,7 @@ client.on('message', async (message) => {
                     const caption = `*${res.Title} (${res.Year})*\nRuntime: ${res.Runtime}\nGenre: ${res.Genre}\nIMDB Rating: ${res.imdbRating}`;
                     // console.log(res.Poster);
                     const media = await MessageMedia.fromUrl(res.Poster);
-                    await client.sendMessage(message.from,media,{caption : caption});
+                    await client.reply(message.from,media,{caption : caption});
                 })
                 .catch(err => console.log(err));
             }
@@ -348,6 +351,7 @@ async function getItem(item, client, message){
 
 var http = require('http'); //importing http
 const res = require('express/lib/response');
+const { group } = require('console');
 
 function startKeepAlive() {
     setInterval(function() {
