@@ -69,7 +69,7 @@ client.on('message', async (message) => {
 		sendAnime(anime, client, message);
 		console.log(animeDetails);
 	}
-	else if(message.body === '!score' && allowedGrps.includes(chat.id)){
+	else if(message.body === '!score' && (!chat.isGroup || allowedGrps.includes(chat.id))){
 		
 		let liveMatches = await cricket();
 		let rows = liveMatches.matchNames;
@@ -99,7 +99,7 @@ client.on('message', async (message) => {
 	
 		await chat.reply(text, { mentions });
 	}
-    else if (message.body.toLowerCase().startsWith("!shop ")  && allowedGrps.includes(chat.id)) {
+    else if (message.body.toLowerCase().startsWith("!shop ")  && (!chat.isGroup || allowedGrps.includes(chat.id))) {
         let shop = message.body.split("!shop ")[1];
         let item = shop.split(" ")[0];
         let shopDetails = await itemData(item);
@@ -129,7 +129,7 @@ client.on('message', async (message) => {
         });
 
     }
-    else if(message.body.toLowerCase().startsWith("!movie") && allowedGrps.includes(chat.id)){
+    else if(message.body.toLowerCase().startsWith("!movie") && (!chat.isGroup || allowedGrps.includes(chat.id))){
         let movieDetails = message.body.split("!movie ");
         let messageLength = movieDetails.length;
         // console.log(messageLength);
