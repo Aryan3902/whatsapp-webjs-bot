@@ -84,7 +84,7 @@ client.on('message', async (message) => {
 		console.log(list.sections[0].rows);
 		client.sendMessage(message.from, list);
 	}
-	else if (message.body === ".everyone" ) {
+	else if (message.body === ".everyone"  && chat.isGroup ) {
 		const chat = await message.getChat();
 	
 		let text = "";
