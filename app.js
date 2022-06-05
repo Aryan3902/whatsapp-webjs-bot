@@ -60,7 +60,7 @@ client.on('message', async (message) => {
 	if(message.body === '!ping') {	
 		message.reply('pong');
 	}
-	else if(message.body.toLowerCase().startsWith("anime ") && allowedGrps.includes(chat.id)) {
+	else if(message.body.toLowerCase().startsWith("!anime ") && (!chat.isGroup || allowedGrps.includes(chat.id))) {
 		console.log(message.body);
 		let anime = message.body;
 		
