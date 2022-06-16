@@ -9,7 +9,7 @@ const express = require('express');
 
 const { Client, LocalAuth, MessageMedia, List,Chat, Buttons, MessageTypes} = require('whatsapp-web.js');
 
-const allowedGrps = ['919770066812-1627626919', '120363021118812220','919770066812-1604162668','120363024469115035']
+const allowedGrps = ['919770066812-1627626919', '120363021118812220','919770066812-1604162668','120363024469115035', '120363023850607174']
 const app = express();
 app.get('/', (req, res) => {
  
@@ -35,7 +35,7 @@ client.on('ready', () => {
 });
 
 client.on('message', message => {
-	console.log(chat.id);
+	
 	console.log(message.body + " sent by " + message.from);;
 	const promise = message.getQuotedMessage();
 	const newPromise = promise.then((response) => {
@@ -56,11 +56,11 @@ client.on('message', message => {
 
 client.on('message', async (message) => {
 	let chat = await message.getChat();
-    
+    console.log(chat.id);
 	if(message.body === '!ping') {	
 		message.reply('pong');
 	}
-	else if(message.body.toLowerCase().startsWith("!anime ") && (!chat.isGroup || allowedGrps.includes(chat.id))) {
+	else if(message.body.toLowerCase().startsWith("!anime ") && (!chat.isGroup || allowedGrps.includes(chat.id.user))) {
 		console.log(message.body);
 		let anime = message.body;
 		
@@ -69,7 +69,7 @@ client.on('message', async (message) => {
 		sendAnime(anime, client, message);
 		console.log(animeDetails);
 	}
-	else if(message.body === '!score' && (!chat.isGroup || allowedGrps.includes(chat.id))){
+	else if(message.body === '!score' && (!chat.isGroup || allowedGrps.includes(chat.id.user))){
 		
 		let liveMatches = await cricket();
 		let rows = liveMatches.matchNames;
@@ -84,7 +84,7 @@ client.on('message', async (message) => {
 		console.log(list.sections[0].rows);
 		client.sendMessage(message.from, list);
 	}
-	else if (message.body === ".everyone"  && chat.isGroup ) {
+	else if (message.body === "!everyone"  && chat.isGroup ) {
 		const chat = await message.getChat();
 	
 		let text = "";
@@ -99,7 +99,7 @@ client.on('message', async (message) => {
 	
 		await chat.sendMessage(text, { mentions });
 	}
-    else if (message.body.toLowerCase().startsWith("!shop ")  && (!chat.isGroup || allowedGrps.includes(chat.id))) {
+    else if (message.body.toLowerCase().startsWith("!shop ")  && (!chat.isGroup || allowedGrps.includes(chat.id.user))) {
         let shop = message.body.split("!shop ")[1];
         let item = shop.split(" ")[0];
         let shopDetails = await itemData(item);
@@ -129,7 +129,7 @@ client.on('message', async (message) => {
         });
 
     }
-    else if(message.body.toLowerCase().startsWith("!movie") && (!chat.isGroup || allowedGrps.includes(chat.id))){
+    else if(message.body.toLowerCase().startsWith("!movie") && (!chat.isGroup || allowedGrps.includes(chat.id.user))){
         let movieDetails = message.body.split("!movie ");
         let messageLength = movieDetails.length;
         // console.log(messageLength);
