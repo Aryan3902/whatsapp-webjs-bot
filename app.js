@@ -35,7 +35,7 @@ client.on('ready', () => {
 });
 
 client.on('message', message => {
-	
+	console.log(chat.id);
 	console.log(message.body + " sent by " + message.from);;
 	const promise = message.getQuotedMessage();
 	const newPromise = promise.then((response) => {
