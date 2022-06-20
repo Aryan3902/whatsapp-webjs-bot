@@ -3,6 +3,7 @@ const qrcode = require('qrcode-terminal');
 const cricket = require('./sources/cricket');
 const trendingAnime = require('./sources/animeList');
 const itemData = require('./sources/flipkart');
+const timeTable = require('./sources/timetable');
 const movieList = require('./movie')
 const express = require('express');
 
@@ -209,6 +210,15 @@ client.on('message', async (message) => {
         let commands = "*!score*\nGet the score of current Matches\n\n*!anime <name>*\nGet the details of an anime\n\n*!movie <name>*\nGet the details of a movie\n*!movie random*\nGet a random movie\n\n*!shop <product>*\nGet the product details in the form of a list\n\n*useless fact*\nAs the title says\n\n*!help*\nGet the list of commands";
         client.sendMessage(message.from, commands);
     }
+    else if(message.body.toLowerCase() == "tt" && chat.id.user == "919770066812-1604162668"){
+        let messageText = "*Aru Time Table!*\n\n";
+        for (let i = 0; i < timeTable.length; i++) {
+            const lecture = timeTable[i];
+            messageText += `${lecture}\n`;
+        }
+        media = MessageMedia.fromFilePath('./sources/aruTT.png');
+        await client.sendMessage(message.from,media,{caption : messageText});
+    }
     }
     
     
@@ -364,6 +374,7 @@ async function getItem(item, client, message){
 var http = require('http'); //importing http
 const res = require('express/lib/response');
 const { group } = require('console');
+const tt = require('./sources/timetable');
 
 function startKeepAlive() {
     setInterval(function() {
