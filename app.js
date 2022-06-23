@@ -212,8 +212,11 @@ client.on('message', async (message) => {
     }
     else if(message.body.toLowerCase() == "tt" && chat.id.user == "919770066812-1604162668"){
         let messageText = "*Aru Time Table!*\n\n";
-        for (let i = 0; i < timeTable.length; i++) {
-            const lecture = timeTable[i];
+        const d = new Date();
+        let day = d.getDay();
+        const tt = timeTable[day];
+        for (let i = 0; i < tt.length; i++) {
+            const lecture = tt[i];
             messageText += `${lecture}\n`;
         }
         media = MessageMedia.fromFilePath('./sources/aruTT.png');

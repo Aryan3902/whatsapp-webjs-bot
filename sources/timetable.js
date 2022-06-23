@@ -7,8 +7,6 @@ const timeTable = [["English","Abacus","Hindi","Maths","Games"],
 ["H","O","L","I","D","A","Y!"],
 ["H","O","L","I","D","A","Y!"]];
 
-const d = new Date();
-let day = d.getDay();
-const tt = timeTable[day];
 
-module.exports = tt;
+
+module.exports = timeTable;
