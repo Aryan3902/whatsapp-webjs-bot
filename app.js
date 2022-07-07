@@ -4,8 +4,10 @@ const cricket = require('./sources/cricket');
 const trendingAnime = require('./sources/animeList');
 const itemData = require('./sources/flipkart');
 const timeTable = require('./sources/timetable');
-const movieList = require('./movie')
+const movieList = require('./movie');
+// const NumCodes = require('./Countrycode')
 const express = require('express');
+const truecallerjs = require('truecallerjs');
 
 
 const { Client, LocalAuth, MessageMedia, List,Chat, Buttons, MessageTypes} = require('whatsapp-web.js');
@@ -227,7 +229,37 @@ client.on('message', async (message) => {
     
 )
 
+client.on('group_join', async (notification) => {
+    // User has joined or been added to the group.
+    let chat = await notification.getChat();
+    // if (chat.id.user === "120363040417026510") {
+        let phoneNum = notification.id.participant.split("@")[0]
 
+        var searchData = {
+            number: phoneNum.substring(2),
+            countryCode: "IN",
+            installationId: "a1i01--_AnGfxF6VeOJWjq0gAelg9NiKwNmMartCd8kRo-ANh2JRsFxnP6PsjYS3"
+        }
+
+        var sn = truecallerjs.searchNumber(searchData);
+        sn.then(function(response) {
+            let newPersonDetails = response.data[0]
+            let messageText = ""
+            if("altName" in newPersonDetails){
+                messageText = `*New person Joined ${chat.name} Group*\nName: ${newPersonDetails.name}\nAlt Name: ${newPersonDetails.altName}\nContact Number: ${newPersonDetails.phones[0].e164Format}\nScore: ${newPersonDetails.score}\nCity: ${newPersonDetails.addresses[0].city}` 
+            }
+            else{
+                messageText =`*New person Joined ${chat.name} Group*\nName: ${newPersonDetails.name}\nContact Number: ${newPersonDetails.phones[0].e164Format}\nScore: ${newPersonDetails.score}\nCity: ${newPersonDetails.addresses[0].city}`
+            }
+            console.log(response)
+            client.sendMessage("919770066812@c.us",messageText)
+        });
+    
+    
+    // console.log('join', notification);
+    
+    // notification.reply('User joined.');
+});
 
 client.initialize();
 
