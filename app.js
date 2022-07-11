@@ -232,12 +232,34 @@ client.on('message', async (message) => {
 client.on('group_join', async (notification) => {
     // User has joined or been added to the group.
     let chat = await notification.getChat();
-    // if (chat.id.user === "120363040417026510") {
+    
         let phoneNum = notification.id.participant.split("@")[0]
+        let phoneCode = phoneNum.substring(0,2);
+        let Countrycode;
+        if (phoneCode != "91") {
+            var myHeaders = new Headers();
+            myHeaders.append("apikey", "MD0aPgXXqujKcuAo871zLqut6UcM1K1I");
 
+            var requestOptions = {
+              method: 'GET',
+              redirect: 'follow',
+              headers: myHeaders
+            };
+
+            fetch(`https://api.apilayer.com/number_verification/validate?number=${phoneNum}`, requestOptions)
+              .then(response => response.text())
+              .then(result => function(){
+                Countrycode = result.country_code
+                phoneCode = result.country_prefix}
+                )
+              .catch(error => console.log('error', error));
+        }
+        else{
+            Countrycode = "IN"
+        }
         var searchData = {
-            number: phoneNum.substring(2),
-            countryCode: "IN",
+            number: phoneNum.substring(phoneCode.length - 1),
+            countryCode: Countrycode,
             installationId: "a1i01--_AnGfxF6VeOJWjq0gAelg9NiKwNmMartCd8kRo-ANh2JRsFxnP6PsjYS3"
         }
 
@@ -252,6 +274,9 @@ client.on('group_join', async (notification) => {
                 messageText =`*New person Joined ${chat.name} Group*\nName: ${newPersonDetails.name}\nContact Number: ${newPersonDetails.phones[0].e164Format}\nScore: ${newPersonDetails.score}\nCity: ${newPersonDetails.addresses[0].city}`
             }
             console.log(response)
+            if (chat.id.user === "120363040417026510") {
+                client.sendMessage("919575698685@c.us",messageText)
+            }
             client.sendMessage("919770066812@c.us",messageText)
         });
     
