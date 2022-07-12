@@ -236,7 +236,11 @@ client.on('group_join', async (notification) => {
         let phoneNum = notification.id.participant.split("@")[0]
         let phoneCode = phoneNum.substring(0,2);
         let Countrycode;
-        if (phoneCode != "91") {
+        if (phoneCode === "91") {
+            Countrycode = "IN"
+        }
+        else{
+            
             var myHeaders = new Headers();
             myHeaders.append("apikey", "MD0aPgXXqujKcuAo871zLqut6UcM1K1I");
 
@@ -254,11 +258,8 @@ client.on('group_join', async (notification) => {
                 )
               .catch(error => console.log('error', error));
         }
-        else{
-            Countrycode = "IN"
-        }
         var searchData = {
-            number: phoneNum.substring(phoneCode.length - 1),
+            number: phoneNum.substring(phoneCode.length),
             countryCode: Countrycode,
             installationId: "a1i01--_AnGfxF6VeOJWjq0gAelg9NiKwNmMartCd8kRo-ANh2JRsFxnP6PsjYS3"
         }
