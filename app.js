@@ -264,7 +264,7 @@ client.on('group_join', async (notification) => {
             installationId: "a1i01--_AnGfxF6VeOJWjq0gAelg9NiKwNmMartCd8kRo-ANh2JRsFxnP6PsjYS3"
         }
 
-        var sn = truecallerjs.searchNumber(searchData);
+        var sn = await truecallerjs.searchNumber(searchData);
         sn.then(function(response) {
             let newPersonDetails = response.data[0]
             let messageText = ""
@@ -276,9 +276,9 @@ client.on('group_join', async (notification) => {
             }
             console.log(response)
             if (chat.id.user === "120363040417026510") {
-                client.sendMessage("919575698685@c.us",messageText)
+                await client.sendMessage("919575698685@c.us",messageText)
             }
-            client.sendMessage("919770066812@c.us",messageText)
+            await client.sendMessage("919770066812@c.us",messageText)
         });
     
     
