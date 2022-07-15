@@ -265,7 +265,7 @@ client.on('group_join', async (notification) => {
         }
 
         var sn = await truecallerjs.searchNumber(searchData);
-        sn.then(function(response) {
+        sn.then(async function(response) {
             let newPersonDetails = response.data[0]
             let messageText = ""
             if("altName" in newPersonDetails){
