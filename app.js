@@ -232,7 +232,7 @@ client.on('message', async (message) => {
 client.on('group_join', async (notification) => {
     // User has joined or been added to the group.
     let chat = await notification.getChat();
-    
+        console.log("New Group Join")
         let phoneNum = notification.id.participant.split("@")[0]
         let phoneCode = phoneNum.substring(0,2);
         let Countrycode;
@@ -264,7 +264,7 @@ client.on('group_join', async (notification) => {
             installationId: "a1i01--_AnGfxF6VeOJWjq0gAelg9NiKwNmMartCd8kRo-ANh2JRsFxnP6PsjYS3"
         }
 
-        var sn = await truecallerjs.searchNumber(searchData);
+        var sn = truecallerjs.searchNumber(searchData);
         sn.then(async function(response) {
             let newPersonDetails = response.data[0]
             let messageText = ""

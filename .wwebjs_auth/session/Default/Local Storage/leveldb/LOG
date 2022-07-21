@@ -1,3 +1,2 @@
-2022/07/12-13:00:33.458 5bbc Reusing MANIFEST C:\Users\aryan\Documents\Whatsapp\.wwebjs_auth\session\Default\Local Storage\leveldb/MANIFEST-000001
-2022/07/12-13:00:33.459 5bbc Recovering log #3
-2022/07/12-13:00:33.460 5bbc Reusing old log C:\Users\aryan\Documents\Whatsapp\.wwebjs_auth\session\Default\Local Storage\leveldb/000003.log 
+2022/07/21-19:14:11.519 45c4 Creating DB C:\Users\aryan\Documents\Whatsapp\.wwebjs_auth\session\Default\Local Storage\leveldb since it was missing.
+2022/07/21-19:14:11.527 45c4 Reusing MANIFEST C:\Users\aryan\Documents\Whatsapp\.wwebjs_auth\session\Default\Local Storage\leveldb/MANIFEST-000001
