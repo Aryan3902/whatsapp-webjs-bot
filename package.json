@@ -1,12 +1,12 @@
 {
   "dependencies": {
-    "axios": "^0.26.0",
-    "cheerio": "^1.0.0-rc.11",
+    "axios": "^0.27.2",
+    "cheerio": "^1.0.0-rc.12",
     "express": "^4.18.1",
-    "node-fetch": "^3.2.4",
+    "node-fetch": "^3.2.10",
     "qrcode-terminal": "^0.12.0",
-    "truecallerjs": "^1.0.16",
-    "whatsapp-web.js": "^1.16.6"
+    "truecallerjs": "^1.1.1",
+    "whatsapp-web.js": "^1.17.1"
   },
   "name": "whatsapp",
   "version": "1.0.0",
