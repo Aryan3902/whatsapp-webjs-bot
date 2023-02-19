@@ -8,6 +8,8 @@ const movieList = require('./movie');
 // const NumCodes = require('./Countrycode')
 const express = require('express');
 const truecallerjs = require('truecallerjs');
+// import { ChatGPTUnofficialProxyAPI } from 'chatgpt'
+const {ChatGPTUnofficialProxyAPI} = await import('chatgpt')
 
 const {
   Client,
@@ -76,6 +78,15 @@ client.on('message', (message) => {
     })
     .catch((err) => console.log());
 });
+
+// let messageArray = []
+// messageArray.push(message.body)
+
+function checkMessage(){
+  let NextMessage = messageArray.pop()
+  return NextMessage;
+    
+}
 
 client.on('message', async (message) => {
   let chat = await message.getChat();
@@ -271,6 +282,20 @@ client.on('message', async (message) => {
     }
     media = MessageMedia.fromFilePath('./sources/aruTT.png');
     await client.sendMessage(message.from, media, { caption: messageText });
+  }
+  else if(message.body.toLowerCase().startsWith('!talk') &&
+  (!chat.isGroup || allowedGrps.includes(chat.id.user))) {
+
+    let chatCommand = message.body.split('!talk ')[1];
+    client.sendMessage(message.from, "Hang on, Thinking!");
+    
+    const api = new ChatGPTUnofficialProxyAPI({
+      accessToken: "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Ik1UaEVOVUpHTkVNMVFURTRNMEZCTWpkQ05UZzVNRFUxUlRVd1FVSkRNRU13UmtGRVFrRXpSZyJ9.eyJodHRwczovL2FwaS5vcGVuYWkuY29tL3Byb2ZpbGUiOnsiZW1haWwiOiJjc2UyMDAwMDEwMTBAaWl0aS5hYy5pbiIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJnZW9pcF9jb3VudHJ5IjoiSU4ifSwiaHR0cHM6Ly9hcGkub3BlbmFpLmNvbS9hdXRoIjp7InVzZXJfaWQiOiJ1c2VyLUF2YUpxTURmaXJQcGk4VzRPS3p6TkExMiJ9LCJpc3MiOiJodHRwczovL2F1dGgwLm9wZW5haS5jb20vIiwic3ViIjoiZ29vZ2xlLW9hdXRoMnwxMDA2ODA1NDExNzgyMjg0MDk1OTYiLCJhdWQiOlsiaHR0cHM6Ly9hcGkub3BlbmFpLmNvbS92MSIsImh0dHBzOi8vb3BlbmFpLm9wZW5haS5hdXRoMGFwcC5jb20vdXNlcmluZm8iXSwiaWF0IjoxNjc2MTk2NTY3LCJleHAiOjE2Nzc0MDYxNjcsImF6cCI6IlRkSkljYmUxNldvVEh0Tjk1bnl5d2g1RTR5T282SXRHIiwic2NvcGUiOiJvcGVuaWQgcHJvZmlsZSBlbWFpbCBtb2RlbC5yZWFkIG1vZGVsLnJlcXVlc3Qgb3JnYW5pemF0aW9uLnJlYWQgb2ZmbGluZV9hY2Nlc3MifQ.FuJfLh2J8ElxXECCn0lOum9jWSFFuONS7yXFgPaYO0a3bXQ2dmzzE5qDH0lYMEUl1v1Deq1wYBGn-iOoGguSMDjkgUgsHUq3FcENPe0QapGWlhYKENgM7pkbIOFo9eS9ftfaka6S3-FuWjIynQ5TTQwQfO7LuPRKEDNjV443a4sAFLHgUKLKgcO1dACCOQlmyJo60ljdupwfenf5EIjG6BF3v6fAFQpPeE-0-4HeNN4KixqPpfNtRCy0MluG8kKahYWjerldONugZvuuAzMjoq17-f67Uq7Xjzm3RYbI9ZO8dsCMujU4GTlSDfj8flNNjzfedIOASEIe65B9_hwHKw"
+    })
+    const res = await api.sendMessage(chatCommand);
+    console.log(res)
+    client.sendMessage(message.from, res.text);
+    console.log("Message sent")
   }
 });
 

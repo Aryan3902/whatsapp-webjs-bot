@@ -1,12 +1,13 @@
 {
   "dependencies": {
     "axios": "^0.27.2",
+    "chatgpt": "^4.6.0",
     "cheerio": "^1.0.0-rc.12",
     "express": "^4.18.1",
     "node-fetch": "^3.2.10",
     "qrcode-terminal": "^0.12.0",
     "truecallerjs": "^1.1.1",
-    "whatsapp-web.js": "^1.17.1"
+    "whatsapp-web.js": "^1.19.4"
   },
   "name": "whatsapp",
   "version": "1.0.0",
@@ -18,8 +19,9 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/OneRudeZombie/whatsapp-webjs-bot.git"
+    "url": "git+https://github.com/Aryan3902/whatsapp-webjs-bot.git"
   },
+  
   "keywords": [
     "Whatsapp",
     "Js"
@@ -27,9 +29,9 @@
   "author": "Aryan",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/OneRudeZombie/whatsapp-webjs-bot/issues"
+    "url": "https://github.com/Aryan3902/whatsapp-webjs-bot/issues"
   },
-  "homepage": "https://github.com/OneRudeZombie/whatsapp-webjs-bot#readme",
+  "homepage": "https://github.com/Aryan3902/whatsapp-webjs-bot#readme",
   "engines": {
     "node": "16.13.0"
   }
